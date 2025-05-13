@@ -1,0 +1,65 @@
+pip install nltk text2emotion
+📘 Step 1: Import Required Libraries
+python
+Copy
+Edit
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import text2emotion as te
+
+# Download necessary NLTK data
+nltk.download('vader_lexicon')
+🧠 Step 2: Initialize Sentiment Analyzers
+python
+Copy
+Edit
+# Initialize VADER Sentiment Analyzer
+sid = SentimentIntensityAnalyzer()
+💬 Step 3: Define a Function to Analyze Sentiment
+python
+Copy
+Edit
+def analyze_sentiment(text):
+    # VADER Sentiment Analysis
+    vader_scores = sid.polarity_scores(text)
+    vader_sentiment = 'Positive' if vader_scores['compound'] > 0 else 'Negative' if vader_scores['compound'] < 0 else 'Neutral'
+
+    # text2emotion Analysis
+    emotion_scores = te.get_emotion(text)
+    dominant_emotion = max(emotion_scores, key=emotion_scores.get)
+
+    return {
+        'VADER Sentiment': vader_sentiment,
+        'VADER Scores': vader_scores,
+        'Dominant Emotion': dominant_emotion,
+        'Emotion Scores': emotion_scores
+    }
+🧪 Step 4: Test the Function with Sample Text
+python
+Copy
+Edit
+sample_text = "I love this new phone! It's amazing and works flawlessly."
+
+result = analyze_sentiment(sample_text)
+print(result)
+📊 Sample Output
+json
+Copy
+Edit
+{
+    "VADER Sentiment": "Positive",
+    "VADER Scores": {
+        "neg": 0.0,
+        "neu": 0.347,
+        "pos": 0.653,
+        "compound": 0.8633
+    },
+    "Dominant Emotion": "Happy",
+    "Emotion Scores": {
+        "Happy": 0.8,
+        "Angry": 0.0,
+        "Sad": 0.0,
+        "Fear": 0.0,
+        "Surprise": 0.0
+    }
+}
